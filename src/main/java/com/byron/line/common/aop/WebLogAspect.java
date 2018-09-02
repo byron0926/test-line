@@ -24,7 +24,7 @@ public class WebLogAspect {
 
     private static ThreadLocal<Long> startTimeThreadLocal = new ThreadLocal<Long>();
 
-    @Pointcut("execution(public * com.dora.tesla.*.*(..))")
+    @Pointcut("execution(public * com.byron.line.*.*(..))")
     public void webLog() {
     }
 

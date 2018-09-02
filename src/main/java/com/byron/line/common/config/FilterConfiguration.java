@@ -25,13 +25,13 @@ public class FilterConfiguration {
         //拦截规则
         registration.addUrlPatterns("/*");
         /*排除过滤页面配置*/
-        registration.addInitParameter("excludePage","/swagger-ui.html#!/");
+        registration.addInitParameter("excludePage","/byron/line");
         /*是否启用过滤标记Y-启用 N-不启用*/
         registration.addInitParameter("tag","Y");
         //过滤器名称
         registration.setName("TokenValidationFilter");
         //是否自动注册 false 取消Filter的自动注册
-        registration.setEnabled(true);
+        registration.setEnabled(false);
         return registration;
     }
 }
