@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OrderDto {
 
+    private Long id;
     private Long companyId;//商户唯一id
     private Integer channelCode;//1-支付宝/2-微信/3-银行卡
     private String playerName;//玩家姓名
@@ -29,4 +30,5 @@ public class OrderDto {
 
     private String randomCode;//随机码
     private String note;
+    private Integer status;
 }

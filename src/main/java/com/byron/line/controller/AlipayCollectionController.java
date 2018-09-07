@@ -31,14 +31,14 @@ public class AlipayCollectionController extends BaseController {
     * */
 //    @VerifySign()
     @RequestMapping("/deposit")
-    @Validation
+//    @Validation
     public ResponseResult appReqLine(@RequestBody String param){
         logger.info("app请求充值入参->{}",param);
         OrderDto orderDto = JSONObject.parseObject(param,OrderDto.class);
+        logger.info("订单实体={}",orderDto);
         ResponseResult rr = null;
         try{
-            orderService.updateOrder(orderDto);
-            rr =  ResponseResult.builder().code(200).msg("订单入库完成").build();
+            rr = orderService.updateOrder(orderDto);
         }catch (Exception e){
             e.printStackTrace();
             exception(e,"/line/deposit");
