@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.byron.line.mapper.OrderMapper">
+
+
+<!--初始化插入订单和订单状态初始化-->
+
+    <insert id="insertOrder" parameterType="com.byron.line.domain.OrderDto" useGeneratedKeys="true" keyProperty="id">
+        insert into t_line_order
+        <trim prefix="(" suffixOverrides="," suffix=") values">
+            <if test="playerName!=null">
+                player_name,
+            </if>
+            <if test="companyId!=null">
+                company_id,
+            </if>
+            <if test="companyNo!=null">
+                company_no,
+            </if>
+            <if test="amount!=null">
+                amount,
+            </if>
+            <if test="depositMethod!=null">
+                deposit_method,
+            </if>
+            <if test="note!=null">
+                note,
+            </if>
+            <if test="playerAccount!=null">
+                player_account,
+            </if>
+            <if test="orderCrtTime!=null">
+                order_crt_time,
+            </if>
+            <if test="orderNo!=null">
+                order_no,
+            </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="playerName!=null">
+                #{playerName},
+            </if>
+            <if test="companyId!=null">
+                #{companyId},
+            </if>
+            <if test="companyNo!=null">
+                #{companyNo},
+            </if>
+            <if test="amount!=null">
+                #{amount},
+            </if>
+            <if test="depositMethod!=null">
+                #{depositMethod},
+            </if>
+            <if test="note!=null">
+                #{note},
+            </if>
+            <if test="playerAccount!=null">
+                #{playerAccount},
+            </if>
+            <if test="orderCrtTime!=null">
+                #{orderCrtTime},
+            </if>
+            <if test="orderNo!=null">
+                #{orderNo},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateOrder" parameterType="com.byron.line.domain.OrderDto">
+        update t_line_order set status = #{status} where id=#{id}
+    </update>
+
+    <select id="queryOrderByRandomCode">
+        select count(1) from t_line_order where random_code=#{random}
+    </select>
+
+</mapper>

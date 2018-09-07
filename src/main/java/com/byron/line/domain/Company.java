@@ -24,20 +24,16 @@ import java.math.BigDecimal;
 public class Company implements Serializable {
     private static final long serialVersionUID = 1134548551089358513L;
 
-    private long id;
-    private String address;
-    private String charge;
-    private String fixPhone;
+    private Long id;
     private String companyName;
-    private String companyCode;
-    private BigDecimal freezingAmount;
-    private BigDecimal availableAmount;
-    private BigDecimal totalAmount;
     private String email;
-    private String website;
-    private int status;
-    private String createTime;
-    private String updateTime;
-    private String note;
-    private int ifRate;
+    private String privateKey;
+    private BigDecimal totalAmount;
+    private BigDecimal availableAmount;
+    private BigDecimal freezingAmount;
+    private String crtTime;
+    private String updTime;
+    private BigDecimal rate;
+
+
 }

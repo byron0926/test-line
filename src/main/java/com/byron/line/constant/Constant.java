@@ -117,5 +117,6 @@ public interface Constant {
     }
     interface Lock {
         String SCALPER_LOCK_PREFIX = "scalper_lock_prefix";
+        String COMPANY_LOCK_PREFIX = "company_lock_prefix";
     }
 }

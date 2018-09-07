@@ -2,8 +2,9 @@ package com.byron.line.component.rocketmq.listener;
 
 import com.alibaba.fastjson.JSON;
 import com.byron.line.common.ctx.SpringApplicationContext;
+import com.byron.line.domain.Company;
 import com.byron.line.req.TestReq;
-import com.byron.line.service.TestService;
+import com.byron.line.service.CompanyService;
 import lombok.Data;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -28,7 +29,7 @@ import java.util.List;
 @Data
 public class ScalperAccountAvailableAmountListener implements MessageListenerConcurrently {
     private static final Logger log = LoggerFactory.getLogger(ScalperAccountAvailableAmountListener.class);
-    private TestService testService;
+    private CompanyService companyService;
 
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
@@ -40,8 +41,8 @@ public class ScalperAccountAvailableAmountListener implements MessageListenerCon
                 String json = messageExt.getProperties().get("KEYS");
                 TestReq testReq = JSON.parseObject(json, TestReq.class);
                 log.info("測試使用看消息:{}",testReq);
-                testService = (TestService) SpringApplicationContext.getBean("TestService");
-                testService.test(testReq);
+                companyService = (CompanyService) SpringApplicationContext.getBean("TestService");
+                companyService.insertCompany(new Company());
             } catch (Exception e){
                 log.info("消費者處理消息拋出異常：{}",e);
             }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.byron.line.mapper.UserMapper">
+
+
+    <!--用户注册-->
+    <insert id="insertUser" parameterType="com.byron.line.domain.ResgisteReq">
+        insert into t_line_user
+        (user_name,password,status)
+        values (#{userName},#{password},1)
+    </insert>
+    <select id="findUserByNameAndPassword" parameterType="com.byron.line.domain.User" resultType="java.lang.Integer">
+        select count(1) from t_line_user t1
+        where user_name=#{userName} and password=#{password}
+    </select>
+
+
+</mapper>

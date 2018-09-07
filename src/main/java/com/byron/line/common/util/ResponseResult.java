@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.byron.line.common.util;
 
 import lombok.AllArgsConstructor;
@@ -10,11 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * @author Administrator
- *
- * Administrator2018年5月16日
- */
 @Data
 @Builder
 @NoArgsConstructor
@@ -25,9 +18,9 @@ public class ResponseResult implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private int code;
 	private String msg;
-	private int status;
-	private Object obj;
+	private Object object;
 
 	
 }

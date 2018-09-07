@@ -1,8 +1,8 @@
 package com.byron.line.component.redis.lock;
 
 import com.byron.line.common.exception.IllegalOptaionException;
-import com.byron.line.common.util.BigDecimalUtils;
 import com.byron.line.common.util.StringUtils;
+import com.byron.line.constant.Constant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,13 +14,12 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 
 /**
  * @title : redis分布式锁
  * @describle :
  * <p>
- * Create By byron
+ * Create By kidy
  * @date 2017/7/5 15:26 星期三
  */
 @Component
@@ -32,14 +31,23 @@ public class RedisDistributedLock {
     @Resource
     private RedisTemplate redisTemplate;
     /* 锁 */
-    private String lock = "redis_distributed_lock";
+    private String lock = Constant.Lock.COMPANY_LOCK_PREFIX;
     /* 锁超时时间(单位/ms) 默认1分钟 */
     private long lockTimeOut = 60*1000;
     /* 锁等待重试次数 默认6次 */
-    private int lockWaitReTryTimes = 6;
-    /* 锁状态 */
-    private boolean locked;
+    private int lockWaitReTryTimes = 2;
 
+    /**
+     * 获取锁资源
+     * 用于多重锁
+     * @param lock
+     * @return
+     * @throws InterruptedException
+     */
+    public synchronized boolean lock(String lock) throws IllegalOptaionException {
+        this.lock = lock;
+        return lock();
+    }
 
     /**
      * 获取锁资源
@@ -53,10 +61,12 @@ public class RedisDistributedLock {
                 long expires = System.currentTimeMillis()+lockTimeOut+1;
                 //设置锁超时时间
                 String expireLockTime = String.valueOf(expires);
+                log.info("锁：{}",lock);
+                log.info("判断锁是否存在:{}",redisTemplate.opsForValue().get(lock));
                 boolean ret = this.setNX(lock,expireLockTime);
+                log.info("是否获取锁:{}",ret);
                 if (ret){
                     //获取锁
-                    locked = true;
                     return true;
                 }
                 /**
@@ -64,11 +74,11 @@ public class RedisDistributedLock {
                  *
                  * 判断锁超时时间，已防止死锁
                  */
-                Long currentLockTimeVal = this.get(lock);
+                Long currentLockTimeVal = StringUtils.isEmpty(this.get(lock))?0:this.get(lock);
                 long systemCurrentTimeVal = System.currentTimeMillis();
-                log.info("当前锁超时时间-系统当前时间:ms"+(currentLockTimeVal-systemCurrentTimeVal));
+//                log.info("当前锁超时时间-系统当前时间:ms"+(currentLockTimeVal-systemCurrentTimeVal));
                 //判断当前锁值是否为空，否则判断锁是否超时(currentLockTimeVal<System.currentTimeMillis())
-                if (StringUtils.isNotEmpty(currentLockTimeVal)&&currentLockTimeVal<systemCurrentTimeVal){
+                if (StringUtils.isNotEmpty(currentLockTimeVal)&&(currentLockTimeVal-systemCurrentTimeVal)<0){
                     //获取上一个锁超时时间，并设置现在锁的超时时间
                     String oldLockTime = this.getSet(lock,expireLockTime);
                     /**
@@ -77,7 +87,6 @@ public class RedisDistributedLock {
                      */
                     if (StringUtils.isNotEmpty(oldLockTime)&&oldLockTime.equals(String.valueOf(currentLockTimeVal))){
                         //获取锁
-                        locked = true;
                         return true;
                     }
                 }
@@ -86,33 +95,59 @@ public class RedisDistributedLock {
                 /**
                  * 使用随机数保证每个线程等待时间公平
                  */
-                BigDecimal time = BigDecimalUtils.op(0, BigDecimalUtils.BigDecimalType.MULTIPLY,String.valueOf(Math.random()),"10000");
-                log.info("重试耗时:ms"+time.longValue());
-                Thread.sleep(time.longValue());
+//                BigDecimal time = BigDecimalUtils.op(0, BigDecimalUtils.BigDecimalType.MULTIPLY,String.valueOf(Math.random()),"100");
+//                log.info("重试耗时:ms"+10);
+                Thread.sleep(5);
             }
         } catch (InterruptedException e) {
             log.info("redis获取锁异常:{}",e.getMessage());
             throw new IllegalOptaionException("redis获取锁异常",e);
         }
-        locked = false;
         return false;
     }
 
     /**
      * 释放锁资源
+     * 用于多重锁
      */
-    public synchronized void unlock(){
-        //只有拥有锁资源线程方可释放锁资源
+    public synchronized void unlock(String lockey,boolean locked){
         if (locked){
-            redisTemplate.delete(lock);
-            locked = false;
-        }else{
-            log.info("在竞争锁等待重试次数内仍未获取到锁，sorry，我不要锁了，干自己事去了。。。。");
+            //只有拥有锁资源线程方可释放锁资源
+            redisTemplate.execute((RedisCallback<String>) connection -> {
+                connection.del(lockey.getBytes());
+                log.info("释放锁：{}",lockey);
+                return null;
+            });
+            log.info("查看锁是否已被释放:{}",redisTemplate.opsForValue().get(lockey));
+        } else {
+            log.info("非占有锁[{}]资源者不可释放锁资源，重试机制内未获取到锁，该干啥干啥去",lockey);
+        }
+    }
+
+    /**
+     * 释放锁资源
+     */
+    public synchronized void unlock(boolean locked){
+        if (locked){
+            //只有拥有锁资源线程方可释放锁资源
+            redisTemplate.execute((RedisCallback<String>) connection -> {
+                connection.del(lock.getBytes());
+                log.info("释放锁：{}",lock);
+                return null;
+            });
+            log.info("查看锁是否已被释放:{}",redisTemplate.opsForValue().get(lock));
+        } else {
+            log.info("非占有锁[{}]资源者不可释放锁资源，重试机制内未获取到锁，该干啥干啥去",lock);
         }
     }
 
     public Long get(String key){
-        return (Long) redisTemplate.opsForValue().get(key);
+        String result = (String) redisTemplate.execute((RedisCallback<String>) connection -> {
+            RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
+            byte[] value = connection.get(serializer.serialize(key));
+            return serializer.deserialize(value);
+        });
+        return Long.parseLong(result);
     }
 
     public boolean setNX(final String key,String value){

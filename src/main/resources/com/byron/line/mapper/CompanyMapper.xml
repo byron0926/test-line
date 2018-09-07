@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.byron.line.mapper.CompanyMapper">
+
+    <insert id="insertCompany" parameterType="com.byron.line.domain.Company">
+        <!-- 商户配置 -->
+        insert into t_line_company
+        <trim prefix="(" suffixOverrides="," suffix=") values">
+            <if test="companyName!=null">
+              company_name,
+            </if>
+            <if test="email!=null">
+              email,
+            </if>
+            <if test="privateKey!=null">
+              private_key,
+            </if>
+            <if test="availableAmount!=null">
+              available_amount,
+            </if>
+            <if test="freezingAmount!=null">
+              freezing_amount,
+            </if>
+            <if test="rate!=null">
+              rate,
+            </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyName!=null">
+                #{companyName},
+            </if>
+            <if test="email!=null">
+                #{email},
+            </if>
+            <if test="privateKey!=null">
+                #{privateKey},
+            </if>
+            <if test="availableAmount!=null">
+                #{availableAmount},
+            </if>
+            <if test="freezingAmount!=null">
+                #{freezingAmount},
+            </if>
+            <if test="rate!=null">
+                #{rate},
+            </if>
+        </trim>
+
+    </insert>
+    <!--充值关单时-->
+    <update id="updateCompanyAmount" parameterType="com.byron.line.domain.OrderDto">
+        update t_line_company set available_amount=available_amount+#{amount}
+    </update>
+
+
+</mapper>
