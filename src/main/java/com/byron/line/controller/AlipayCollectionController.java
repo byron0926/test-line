@@ -29,7 +29,7 @@ public class AlipayCollectionController extends BaseController {
     * app接收到请求后抓取非空字段传给后台
     * 后台插入订单记录/并更新对应得可用余额，关单和自动上分。
     * */
-    @VerifySign()
+//    @VerifySign()
     @RequestMapping("/deposit")
     @Validation
     public ResponseResult appReqLine(@RequestBody String param){

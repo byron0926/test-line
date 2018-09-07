@@ -5,6 +5,8 @@
 
 <!--初始化插入订单和订单状态初始化-->
 
+
+
     <insert id="insertOrder" parameterType="com.byron.line.domain.OrderDto" useGeneratedKeys="true" keyProperty="id">
         insert into t_line_order
         <trim prefix="(" suffixOverrides="," suffix=") values">
@@ -14,14 +16,14 @@
             <if test="companyId!=null">
                 company_id,
             </if>
-            <if test="companyNo!=null">
-                company_no,
+            <if test="companyOrderNo!=null">
+                company_Order_no,
             </if>
             <if test="amount!=null">
                 amount,
             </if>
-            <if test="depositMethod!=null">
-                deposit_method,
+            <if test="type!=null">
+                type,
             </if>
             <if test="note!=null">
                 note,
@@ -29,11 +31,29 @@
             <if test="playerAccount!=null">
                 player_account,
             </if>
+            <if test="randomCode!=null">
+                randomCode,
+            </if>
             <if test="orderCrtTime!=null">
                 order_crt_time,
             </if>
             <if test="orderNo!=null">
                 order_no,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+            <if test="channelCode!=null">
+                channel_code,
+            </if>
+            <if test="terminal!=null">
+                terminal,
+            </if>
+            <if test="playerId!=null">
+                player_id,
+            </if>
+            <if test="qrcodeUrl!=null">
+                qrcode_url,
             </if>
         </trim>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -43,14 +63,14 @@
             <if test="companyId!=null">
                 #{companyId},
             </if>
-            <if test="companyNo!=null">
-                #{companyNo},
+            <if test="companyOrderNo!=null">
+                #{companyOrderNo},
             </if>
             <if test="amount!=null">
                 #{amount},
             </if>
-            <if test="depositMethod!=null">
-                #{depositMethod},
+            <if test="type!=null">
+                #{type},
             </if>
             <if test="note!=null">
                 #{note},
@@ -58,11 +78,29 @@
             <if test="playerAccount!=null">
                 #{playerAccount},
             </if>
+            <if test="randomCode!=null">
+                #{randomCode},
+            </if>
             <if test="orderCrtTime!=null">
                 #{orderCrtTime},
             </if>
             <if test="orderNo!=null">
                 #{orderNo},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+            <if test="channelCode!=null">
+                #{channelCode},
+            </if>
+            <if test="terminal!=null">
+                #{terminal},
+            </if>
+            <if test="playerId!=null">
+                #{playerId},
+            </if>
+            <if test="qrcodeUrl!=null">
+                #{qrcodeUrl},
             </if>
         </trim>
     </insert>

@@ -40,7 +40,7 @@ public class OrderServiceImlp implements OrderService {
     @Override
     public ResponseResult insertOrderAndReturnEntity(OrderDto orderDto) {
         /*初始化订单状态*/
-        switch (orderDto.getType()){
+        switch (orderDto.getChannelCode()){
             case 1:orderDto.setQrcodeUrl("home/root/apliay"+new Random().nextInt(10) +".jpg");
             case 2:orderDto.setQrcodeUrl("home/root/wechat"+new Random().nextInt(10) +".jpg");
             case 3:orderDto.setQrcodeUrl("银行卡号");

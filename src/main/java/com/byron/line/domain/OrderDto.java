@@ -5,23 +5,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDto {
 
-    private Long companyId;
-    private Integer channelCode;
-    private String playerId;
-    private String companyOrderNo;
-    private String playerName;
-    private String cardNo;
+    private Long companyId;//商户唯一id
+    private Integer channelCode;//1-支付宝/2-微信/3-银行卡
+    private String playerName;//玩家姓名
+    private String orderNo;//交易订单号
+    private Integer type;//  收款理由：1-转帐和2-收款
+    private String crtTime;//订单创建时间
+    private String playerAccount;//玩家账户
+    private BigDecimal amount;
+
+    private String playerId;//玩家在商户平台得id
     private String terminal;//终端PC 1/安卓 2
-    private String qrcodeUrl;
-    private String orderNo;
-    private Integer type;//1-支付宝/2-微信/3-银行卡
+    private String qrcodeUrl;//同步响应给商户得
+    private String companyOrderNo;//商户订单号
+
     private String randomCode;//随机码
-
-
+    private String note;
 }
