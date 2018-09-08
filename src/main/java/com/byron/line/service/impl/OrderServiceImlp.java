@@ -74,6 +74,9 @@ public class OrderServiceImlp implements OrderService {
         if(StringUtils.isEmpty(orderDto.getOrderNo())){
             return ResponseResult.builder().code(-9999).msg("订单号为空").build();
         }
+        if(StringUtils.isEmpty(orderDto.getAmount())){
+            return ResponseResult.builder().code(-9999).msg("订单金额为空").build();
+        }
         orderDto.setStatus(2);
         int result = orderMapper.updateOrder(orderDto);
         if(1 == result){

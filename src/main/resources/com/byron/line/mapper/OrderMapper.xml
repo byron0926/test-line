@@ -105,7 +105,7 @@
         </trim>
     </insert>
     <update id="updateOrder" parameterType="com.byron.line.domain.OrderDto">
-        update t_line_order set status = #{status} where order_no=#{orderNo}
+        update t_line_order set status = #{status}，order_crt_time=#{orderCrtTime},amount=#{amount},type=#{type} where order_no=#{orderNo}
     </update>
 
     <select id="queryOrderByRandomCode" resultType="int">
