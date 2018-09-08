@@ -19,16 +19,17 @@ public class OrderDto {
     private String playerName;//玩家姓名
     private String orderNo;//交易订单号
     private Integer type;//  收款理由：1-转帐和2-收款
-    private String crtTime;//订单创建时间
     private String playerAccount;//玩家账户
     private BigDecimal amount;
+    private String orderCrtTime;
 
     private String playerId;//玩家在商户平台得id
-    private String terminal;//终端PC 1/安卓 2
+    private Integer terminal;//终端PC 1/安卓 2
     private String qrcodeUrl;//同步响应给商户得
     private String companyOrderNo;//商户订单号
 
     private String randomCode;//随机码
     private String note;
     private Integer status;
+    private String crtTime;//订单创建时间
 }

@@ -52,5 +52,8 @@
         update t_line_company set available_amount=available_amount+#{amount}
     </update>
 
+    <select id="queryCompanyRateById" resultType="com.byron.line.domain.Company">
+        select id,rate from t_line_company where id=#{id}
+    </select>
 
 </mapper>

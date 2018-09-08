@@ -7,7 +7,7 @@
 
 
 
-    <insert id="insertOrder" parameterType="com.byron.line.domain.OrderDto" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertOrder" parameterType="com.byron.line.domain.OrderDto" useGeneratedKeys="true" keyProperty="id" >
         insert into t_line_order
         <trim prefix="(" suffixOverrides="," suffix=") values">
             <if test="playerName!=null">
@@ -32,7 +32,7 @@
                 player_account,
             </if>
             <if test="randomCode!=null">
-                randomCode,
+                random_code,
             </if>
             <if test="orderCrtTime!=null">
                 order_crt_time,
@@ -108,8 +108,12 @@
         update t_line_order set status = #{status} where order_no=#{orderNo}
     </update>
 
-    <select id="queryOrderByRandomCode">
+    <select id="queryOrderByRandomCode" resultType="int">
         select count(1) from t_line_order where random_code=#{random}
+    </select>
+
+    <select id="queryOrderById" resultType="com.byron.line.domain.OrderDto">
+        select * from t_line_order where id=#{id}
     </select>
 
 </mapper>
