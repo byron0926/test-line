@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.byron.line.mapper.CompanyMapper">
 
-    <insert id="insertCompany" parameterType="com.byron.line.domain.Company">
+    <insert id="insertCompany" parameterType="com.byron.line.domain.Company" useGeneratedKeys="true" keyProperty="id">
         <!-- 商户配置 -->
         insert into t_line_company
         <trim prefix="(" suffixOverrides="," suffix=") values">

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CompanyMapper {
     void updCompany(OrderDto orderDto);
-    void insertCompany(Company company);
+    int insertCompany(Company company);
     Company queryCompanyRateById(Long id);
 }

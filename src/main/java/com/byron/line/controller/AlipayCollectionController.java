@@ -43,6 +43,7 @@ public class AlipayCollectionController extends BaseController {
             e.printStackTrace();
             exception(e,"/line/deposit");
         }
+        logger.info("同步响应给app的消息={}",rr);
         return rr;
     }
 

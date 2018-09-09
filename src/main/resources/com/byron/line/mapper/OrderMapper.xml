@@ -105,15 +105,29 @@
         </trim>
     </insert>
     <update id="updateOrder" parameterType="com.byron.line.domain.OrderDto">
-        update t_line_order set status = #{status}，order_crt_time=#{orderCrtTime},amount=#{amount},type=#{type} where order_no=#{orderNo}
+        update t_line_order set status = #{status},order_crt_time=#{orderCrtTime},amount=#{amount},type=#{type} where random_code=#{note}
     </update>
 
     <select id="queryOrderByRandomCode" resultType="int">
-        select count(1) from t_line_order where random_code=#{random}
+        select count(1) from t_line_order where random_code=#{randomCode}
     </select>
 
     <select id="queryOrderById" resultType="com.byron.line.domain.OrderDto">
         select * from t_line_order where id=#{id}
     </select>
+
+    <update id="notify">
+        update t_line_order set notify = 1 where order_no=#{orderNo}
+    </update>
+
+    <update id="setOverTimeStatus">
+        update t_line_order set status = 2 where id=#{id}
+    </update>
+
+    <select id="timerQuery" resultType="com.byron.line.domain.OrderDto">
+        select id,order_no,crt_time,status from t_line_order where crt_time >= now()-interval 20 minute;
+    </select>
+
+
 
 </mapper>

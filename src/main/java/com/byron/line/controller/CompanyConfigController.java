@@ -23,15 +23,12 @@ public class CompanyConfigController extends BaseController{
     public ResponseResult initCompany(@RequestBody Company company){
         ResponseResult rd = null;
         try{
-            companyService.insertCompany(company);
-            rd = ResponseResult.builder().code(200).msg("商户信息配置成功").build();
-
+            rd = companyService.insertCompany(company);
         }catch (Exception e){
             e.printStackTrace();
             exception(e,"company/config");
         }
         return rd;
-
     }
 
 }

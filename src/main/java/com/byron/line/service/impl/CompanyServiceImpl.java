@@ -1,5 +1,6 @@
 package com.byron.line.service.impl;
 
+import com.byron.line.common.util.ResponseResult;
 import com.byron.line.domain.Company;
 import com.byron.line.mapper.CompanyMapper;
 import com.byron.line.service.CompanyService;
@@ -13,8 +14,15 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyMapper companyMapper;
 
     @Override
-    public void insertCompany(Company company) {
-        companyMapper.insertCompany(company);
+    public ResponseResult insertCompany(Company company) {
+        int result = companyMapper.insertCompany(company);
+        ResponseResult rd = null;
+        if(1==result){
+            rd = ResponseResult.builder().object(company).code(200).msg("商户配置成功").build();
+        }else {
+            rd = ResponseResult.builder().code(-9999).msg("商户配置失败").build();
+        }
+        return rd;
     }
 
     @Override

@@ -32,4 +32,5 @@ public class OrderDto {
     private String note;
     private Integer status;
     private String crtTime;//订单创建时间
+    private String notifyUrl;
 }
