@@ -29,7 +29,7 @@ public interface Constant {
                 "QQDNJXmeiqa1n2hQzWTAv6Vjd9DDc6cvMKDl56/8iA42zsbwhEWBEb/RVh7zcLcDKumYa1WtfT3w" +
                 "GW1t7F0GFzno";
         /*公钥*/
-        String PUBLIC_KDY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQClVNJfuTWsDavS2byXsmPEBwFsFtjhA2QTI/RF" +
+        String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQClVNJfuTWsDavS2byXsmPEBwFsFtjhA2QTI/RF" +
                 "1lN+4PxAdRq9V10P8SgdsLOerFlj7p/sWE4SvspDOLlEIf9PioIiWqDnZ/u3fI7+RJFhPXuPkO/F" +
                 "v+bk95zT5bfoaPhNomZlFcH7ojjXEuufAclrcoiiwH/ecUmisYTQskoJBwIDAQAB";
     }

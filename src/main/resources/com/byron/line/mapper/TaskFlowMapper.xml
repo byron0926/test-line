@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.byron.line.mapper.TaskFlowMapper">
+
+
+    <insert id="insertTaskFlow" parameterType="com.byron.line.domain.OrderDto">
+
+        insert into t_line_task_flow
+        <trim prefix="(" suffixOverrides="," suffix=") values">
+            <if test="amount!=null">
+                amount,
+            </if>
+            <if test="orderNo!=null">
+                order_no,
+            </if>
+            <if test="orderCrtTime!=null">
+                order_crt_time,
+            </if>
+            <if test="playerAccount!=null">
+                player_account,
+            </if>
+            <if test="note!=null">
+                note,
+            </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="amount!=null">
+                #{amount},
+            </if>
+            <if test="orderNo!=null">
+                #{orderNo},
+            </if>
+            <if test="orderCrtTime!=null">
+                #{orderCrtTime},
+            </if>
+            <if test="playerAccount!=null">
+                #{playerAccount},
+            </if>
+            <if test="note!=null">
+                #{note},
+            </if>
+        </trim>
+
+    </insert>
+
+    <select id="queryByOrderNo" resultType="int">
+
+        select count(1) from t_line_task_flow where order_no=#{orderNo}
+
+    </select>
+
+
+
+</mapper>

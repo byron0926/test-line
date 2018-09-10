@@ -22,13 +22,12 @@ public class ScheduledTasks {
     @Autowired
     private OrderService orderService;
 
-    @Scheduled(cron = "0 0/20 * * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
     public void timer() {
         List<OrderDto> list = orderMapper.timerQuery();
         for(OrderDto orderDto:list){
-            if(0 == orderDto.getStatus()){
-                orderService.setOverTimeStatus(orderDto.getId());
-            }
+            logger.info("超时订单信息={}",orderDto);
+            orderService.setOverTimeStatus(orderDto.getId());
         }
     }
 }

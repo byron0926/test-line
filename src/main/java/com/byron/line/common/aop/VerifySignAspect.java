@@ -1,11 +1,14 @@
 package com.byron.line.common.aop;
 
+import com.alibaba.dubbo.common.utils.IOUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.byron.line.common.annotation.VerifySign;
 import com.byron.line.common.enums.SystemCodeEnum;
 import com.byron.line.common.exception.IllegalOptaionException;
 import com.byron.line.common.util.RSACoderUtils;
 import com.byron.line.common.util.StringUtils;
 import com.byron.line.constant.Constant;
+import com.byron.line.domain.OrderDto;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -20,6 +23,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -60,38 +65,49 @@ public class VerifySignAspect {
      * request 请求form过滤验证
      * @param joinPoint
      */
-    @Before("form2()")
+//    @Before("form2()")
     public void doBefore(JoinPoint joinPoint) throws Exception {
         startTime.set(System.currentTimeMillis());
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        String sign = request.getHeader("sign");
-        if (StringUtils.isEmpty(sign)){
-            throw new IllegalOptaionException(SystemCodeEnum.ILLEGAL_REQUEST);
-        }
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Annotation[] annotations = signature.getMethod().getAnnotations();
-        Object obj = joinPoint.getArgs()[0];
-        Map<String,Object> params = new HashMap<>();
-        if (StringUtils.isNotEmpty(annotations)){
-            for (Annotation annotation : annotations){
-                if (annotation instanceof VerifySign){
-                    VerifySign verifySign = (VerifySign) annotation;
-                    Field[] fields = verifySign.value().getDeclaredFields();
-                    for (Field field : fields) {
-                        if (!field.getName().equals("serialVersionUID")){
-                            PropertyDescriptor pd = new PropertyDescriptor(field.getName(), verifySign.value());
-                            Method method = pd.getReadMethod();
-                            params.put(field.getName(),method.invoke(obj));
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-        if(!RSACoderUtils.verify(RSACoderUtils.formatParameter(params), Constant.RSASign.PUBLIC_KDY,sign)){
-            throw new IllegalOptaionException(SystemCodeEnum.SIGN_ERROR);
-        }
+//        String sign = request.getHeader("sign");
+//        String body = request.getQueryString();
+//        log.info("body={}",body);
+//        OrderDto orderDto = (OrderDto) JSONObject.parse(body);
+//        String sign = orderDto.getSign();
+//        log.info("aop中获取的sign={}",sign);
+//        if (StringUtils.isEmpty(sign)){
+//            throw new IllegalOptaionException(SystemCodeEnum.ILLEGAL_REQUEST);
+//        }
+//        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+//        Annotation[] annotations = signature.getMethod().getAnnotations();
+//        OrderDto obj = (OrderDto) joinPoint.getArgs()[0];
+//        obj.getSign();
+
+
+
+//        Map<String,Object> params = new HashMap<>();
+//        if (StringUtils.isNotEmpty(annotations)){
+//            for (Annotation annotation : annotations){
+//                if (annotation instanceof VerifySign){
+//                    VerifySign verifySign = (VerifySign) annotation;
+//                    Field[] fields = verifySign.value().getDeclaredFields();
+//                    for (Field field : fields) {
+//                        if (!field.getName().equals("serialVersionUID")){
+//                            PropertyDescriptor pd = new PropertyDescriptor(field.getName(), verifySign.value());
+//                            Method method = pd.getReadMethod();
+//                            params.put(field.getName(),method.invoke(obj));
+//                        }
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//        Map map = new HashMap();
+//        map.put("amount",orderDto)
+//        if(!RSACoderUtils.verify(RSACoderUtils.formatParameter(params), Constant.RSASign.PUBLIC_KEY,sign)){
+//            throw new IllegalOptaionException(SystemCodeEnum.SIGN_ERROR);
+//        }
         log.info(StringUtils.format("此请求验证耗时（毫秒） :{0}", (System.currentTimeMillis() - startTime.get())));
     }
 }

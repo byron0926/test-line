@@ -105,7 +105,8 @@
         </trim>
     </insert>
     <update id="updateOrder" parameterType="com.byron.line.domain.OrderDto">
-        update t_line_order set status = #{status},order_crt_time=#{orderCrtTime},amount=#{amount},type=#{type} where random_code=#{note}
+        update t_line_order set status = #{status},order_crt_time=#{orderCrtTime},amount=#{amount},type=#{type},req_time=#{reqTime}
+        where company_id=#{companyId} and player_name=#{note}
     </update>
 
     <select id="queryOrderByRandomCode" resultType="int">
@@ -121,11 +122,11 @@
     </update>
 
     <update id="setOverTimeStatus">
-        update t_line_order set status = 2 where id=#{id}
+        update t_line_order set status = 4 where id=#{id}
     </update>
 
     <select id="timerQuery" resultType="com.byron.line.domain.OrderDto">
-        select id,order_no,crt_time,status from t_line_order where crt_time >= now()-interval 20 minute;
+        select id,order_no,crt_time,status from t_line_order where status=0 and crt_time &lt;= now()-interval 20 minute;
     </select>
 
 

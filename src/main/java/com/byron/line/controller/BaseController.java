@@ -51,7 +51,7 @@ public class BaseController {
         if (StringUtils.isEmpty(sign)){
             throw new IllegalOptaionException(SystemCodeEnum.ILLEGAL_REQUEST);
         }
-        if(!RSACoderUtils.verify(RSACoderUtils.formatParameter(data), Constant.RSASign.PUBLIC_KDY,sign+StringUtils.NULL)){
+        if(!RSACoderUtils.verify(RSACoderUtils.formatParameter(data), Constant.RSASign.PUBLIC_KEY,sign+StringUtils.NULL)){
             throw new IllegalOptaionException(SystemCodeEnum.SIGN_ERROR);
         }
     }
